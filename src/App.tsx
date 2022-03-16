@@ -1,24 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import "./App.css";
+import styled from "styled-components";
 
 function App() {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.key === "Enter" && console.log(e.currentTarget.value);
+  };
+
+  // styled-components
+  const Label = styled.label`
+    display: flex;
+    flex-direction: column;
+  `;
+
+  // components
+  const Search = (inputRef: HTMLInputElement) => (
+    <div className="search">
+      <Label>
+        Image Search
+        <input
+          ref={inputRef}
+          type="text"
+          name="name"
+          onKeyPress={handleEnter}
+        />
+      </Label>
+    </div>
+  );
+  const Image = () => <p>{inputRef}</p>;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Search ref={inputRef} />
+      <Image />
     </div>
   );
 }
