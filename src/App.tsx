@@ -68,6 +68,10 @@ function App() {
     <div className="search">
       <Label>
         Image Search
+        {/* 
+          型 'HTMLInputElement' を型 'LegacyRef<HTMLInputElement> | undefined' に割り当てることはできません。
+          予期された型は、型 'DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>' に対してここで宣言されたプロパティ 'ref' から取得されています
+        */}
         <input
           ref={inputRef}
           type="text"
