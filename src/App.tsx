@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import "./App.css";
 import styled from "styled-components";
 import { createApi } from "unsplash-js";
