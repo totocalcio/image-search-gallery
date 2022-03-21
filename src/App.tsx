@@ -25,6 +25,7 @@ type ApiResultData = {
   status: number;
 };
 
+//【TODO】アクセスキーは定数で読み込む
 const api = createApi({
   accessKey: "Xx4O33YqvXp8q1O3yrtESRZUqzdvMtZn5qP0UsS_dFM",
 });
@@ -38,31 +39,27 @@ const Label = styled.label`
 // 【TODO】apiとcomponentsやmethodsをApp()の外に出す
 function App() {
   // 初期値のnullの後ろに「!」をつけて、null型ではないことを宣言
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null!);
   // 型推論から取得したデータを定義、非nullアサーション演算子を用いて初期値を設定。
   const [photos, setPhotos] = useState<ApiResultData>(null!);
 
-  // inputRefに初期値null+TypeScriptの場合、currentプロパティが存在するか確認
-  // 初期値で型アサーションすることでcurrentプロパティの確認はしない
-  useEffect(() => {
+  const fetchApi = () => {
     api.search
-      .getPhotos({ query: "cat", orientation: "landscape" })
+      .getPhotos({ query: inputRef.current.value, orientation: "landscape" })
       .then((result) => {
         if (result.errors) {
           console.error("error: ", result.errors[0]);
         } else {
-          console.log(result);
           setPhotos(result);
         }
       });
-  }, []);
+  };
 
   //methods
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      console.log(e.currentTarget.value);
-      console.log("ref", inputRef.current?.value);
-      console.log(photos);
+      fetchApi();
+      console.log(inputRef.current?.value);
     }
   };
 
