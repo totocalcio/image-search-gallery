@@ -1,31 +1,70 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "./App.css";
 import styled from "styled-components";
+import { createApi } from "unsplash-js";
 
+//unsplash-js設定
+type Photo = {
+  id: number;
+  width: number;
+  height: number;
+  urls: { large: string; regular: string; raw: string; small: string };
+  color: string | null;
+  user: {
+    username: string;
+    name: string;
+  };
+};
+
+// 【TODO】responseの型定義
+type ApiResultData = {
+  type: string;
+  response: any;
+  originalResponse: Response;
+  errors?: undefined;
+  status: number;
+};
+
+const api = createApi({
+  accessKey: "Xx4O33YqvXp8q1O3yrtESRZUqzdvMtZn5qP0UsS_dFM",
+});
+
+// styled-components
+const Label = styled.label`
+  display: flex;
+  flex-direction: column;
+`;
+
+// 【TODO】apiとcomponentsやmethodsをApp()の外に出す
 function App() {
   // 初期値のnullの後ろに「!」をつけて、null型ではないことを宣言
   const inputRef = useRef<HTMLInputElement>(null);
-  const [count, setCount] = React.useState<number>(0);
+  // 型推論から取得したデータを定義、非nullアサーション演算子を用いて初期値を設定。
+  const [photos, setPhotos] = useState<ApiResultData>(null!);
 
   // inputRefに初期値null+TypeScriptの場合、currentプロパティが存在するか確認
+  // 初期値で型アサーションすることでcurrentプロパティの確認はしない
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    api.search
+      .getPhotos({ query: "cat", orientation: "landscape" })
+      .then((result) => {
+        if (result.errors) {
+          console.error("error: ", result.errors[0]);
+        } else {
+          console.log(result);
+          setPhotos(result);
+        }
+      });
   }, []);
 
+  //methods
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       console.log(e.currentTarget.value);
       console.log("ref", inputRef.current?.value);
+      console.log(photos);
     }
   };
-
-  // styled-components
-  const Label = styled.label`
-    display: flex;
-    flex-direction: column;
-  `;
 
   // components
   const Search: React.VFC = () => (
@@ -42,21 +81,21 @@ function App() {
     </div>
   );
 
-  const Image: React.VFC = () => <p>{inputRef.current?.value}</p>;
+  const Image: React.VFC<{ photo: Photo }> = ({ photo }) => {
+    return (
+      <div>
+        <img src={photo.urls.small} alt="" />
+      </div>
+    );
+  };
 
   return (
     <div className="App">
       <Search />
-      <Image />
-      <button
-        type="button"
-        onClick={() => {
-          setCount((prevCnt) => prevCnt + 1);
-        }}
-      >
-        click
-      </button>
-      <p>{count}</p>
+      {photos &&
+        photos.response.results.map((photo: Photo) => (
+          <Image key={photo.id} photo={photo} />
+        ))}
     </div>
   );
 }
