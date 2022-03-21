@@ -38,7 +38,6 @@ const Label = styled.label`
 
 // 【TODO】apiとcomponentsやmethodsをApp()の外に出す
 function App() {
-  // 初期値のnullの後ろに「!」をつけて、null型ではないことを宣言
   const inputRef = useRef<HTMLInputElement>(null!);
   // 型推論から取得したデータを定義、非nullアサーション演算子を用いて初期値を設定。
   const [photos, setPhotos] = useState<ApiResultData>(null!);
@@ -69,10 +68,6 @@ function App() {
     <div className="search">
       <Label>
         Image Search
-        {/* 
-          型 'HTMLInputElement' を型 'LegacyRef<HTMLInputElement> | undefined' に割り当てることはできません。
-          予期された型は、型 'DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>' に対してここで宣言されたプロパティ 'ref' から取得されています
-        */}
         <input
           ref={inputRef}
           type="text"
