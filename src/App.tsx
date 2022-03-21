@@ -58,8 +58,9 @@ function App() {
   //methods
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      fetchApi();
-      console.log(inputRef.current?.value);
+      if (inputRef.current.value) {
+        fetchApi();
+      }
     }
   };
 
