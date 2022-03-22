@@ -36,6 +36,12 @@ const Label = styled.label`
   flex-direction: column;
 `;
 
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+`;
+
 // 【TODO】apiとcomponentsやmethodsをApp()の外に出す
 function App() {
   const inputRef = useRef<HTMLInputElement>(null!);
@@ -80,19 +86,21 @@ function App() {
 
   const Image: React.VFC<{ photo: Photo }> = ({ photo }) => {
     return (
-      <div>
+      <figure>
         <img src={photo.urls.small} alt="" />
-      </div>
+      </figure>
     );
   };
 
   return (
     <div className="App">
       <Search />
-      {photos &&
-        photos.response.results.map((photo: Photo) => (
-          <Image key={photo.id} photo={photo} />
-        ))}
+      <Grid>
+        {photos &&
+          photos.response.results.map((photo: Photo) => (
+            <Image key={photo.id} photo={photo} />
+          ))}
+      </Grid>
     </div>
   );
 }
