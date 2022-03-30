@@ -1,16 +1,5 @@
 import type { VFC } from "react";
-
-type Photo = {
-  id: number;
-  width: number;
-  height: number;
-  urls: { large: string; regular: string; raw: string; small: string };
-  color: string | null;
-  user: {
-    username: string;
-    name: string;
-  };
-};
+import type { Photo } from "../index.d";
 
 export const Image: VFC<{ photo: Photo }> = ({ photo }) => {
   return (

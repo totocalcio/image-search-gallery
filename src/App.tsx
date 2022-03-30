@@ -4,21 +4,8 @@ import styled from "styled-components";
 import { createApi } from "unsplash-js";
 import { Search } from "./components/Search";
 import { Image } from "./components/Image";
+import type { Photo } from "./index.d";
 
-//unsplash-js設定
-type Photo = {
-  id: number;
-  width: number;
-  height: number;
-  urls: { large: string; regular: string; raw: string; small: string };
-  color: string | null;
-  user: {
-    username: string;
-    name: string;
-  };
-};
-
-// 【TODO】responseの型定義
 type ApiResultData = {
   type: string;
   response: any;
@@ -27,7 +14,6 @@ type ApiResultData = {
   status: number;
 };
 
-//【TODO】アクセスキーは定数で読み込む
 const api = createApi({
   accessKey: "Xx4O33YqvXp8q1O3yrtESRZUqzdvMtZn5qP0UsS_dFM",
 });
