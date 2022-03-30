@@ -3,6 +3,7 @@ import "./App.css";
 import styled from "styled-components";
 import { createApi } from "unsplash-js";
 import { Search } from "./components/Search";
+import { Image } from "./components/Image";
 
 //unsplash-js設定
 type Photo = {
@@ -38,7 +39,6 @@ const Grid = styled.div`
   gap: 10px;
 `;
 
-// 【TODO】apiとcomponentsやmethodsをApp()の外に出す
 function App() {
   // 型推論から取得したデータを定義、非nullアサーション演算子を用いて初期値を設定。
   const [photos, setPhotos] = useState<ApiResultData>(null!);
@@ -53,14 +53,6 @@ function App() {
           setPhotos(result);
         }
       });
-  };
-
-  const Image: React.VFC<{ photo: Photo }> = ({ photo }) => {
-    return (
-      <figure>
-        <img src={photo.urls.small} alt="" />
-      </figure>
-    );
   };
 
   return (
